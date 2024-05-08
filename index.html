@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mini Game</title>
+    <title>Parabola Game</title>
     <style>
         body {
             display: flex;
@@ -12,9 +12,15 @@
             height: 100vh;
             margin: 0;
             font-family: Arial, sans-serif;
+            background-color: #121212;
+            color: white;
         }
         .game-container {
             text-align: center;
+        }
+        #graph {
+            border: 2px solid #007BFF;
+            background-color: #1e1e1e;
         }
         .button {
             display: inline-block;
@@ -26,19 +32,41 @@
             background-color: #007BFF;
             color: white;
         }
+        .info {
+            margin-top: 20px;
+            font-size: 18px;
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
-        <h1>Пр я фрез!</h1>
+        <h1>Parabola Game</h1>
+        <canvas id="graph" width="800" height="400"></canvas>
         <button class="button" onclick="startGame()">Start Game</button>
-        <p id="game-result"></p>
+        <p id="game-result" class="info"></p>
     </div>
 
     <script>
+        const canvas = document.getElementById('graph');
+        const ctx = canvas.getContext('2d');
+
+        function drawParabola(scale) {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.beginPath();
+            ctx.moveTo(0, canvas.height);
+            for (let x = 0; x <= canvas.width; x++) {
+                const y = canvas.height - Math.pow(x / 100, 2) * scale;
+                ctx.lineTo(x, y);
+            }
+            ctx.strokeStyle = '#007BFF';
+            ctx.stroke();
+        }
+
         function startGame() {
-            const result = Math.random() > 0.5 ? 'ты крутой!' : 'ты лох!';
-            document.getElementById('game-result').innerText = result;
+            const scale = Math.random() * 100;
+            drawParabola(scale);
+            const resultText = scale > 50 ? 'You win!' : 'You lose!';
+            document.getElementById('game-result').innerText = resultText + ` Scale: ${scale.toFixed(2)}`;
         }
     </script>
 </body>
