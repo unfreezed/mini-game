@@ -30,14 +30,14 @@
 </head>
 <body>
     <div class="game-container">
-        <h1>Welcome to the Mini Game!</h1>
+        <h1>Пр я фрез!</h1>
         <button class="button" onclick="startGame()">Start Game</button>
         <p id="game-result"></p>
     </div>
 
     <script>
         function startGame() {
-            const result = Math.random() > 0.5 ? 'You Win!' : 'You Lose!';
+            const result = Math.random() > 0.5 ? 'ты крутой!' : 'ты лох!';
             document.getElementById('game-result').innerText = result;
         }
     </script>
