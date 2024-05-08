@@ -43,6 +43,7 @@
         <h1>Parabola Game</h1>
         <canvas id="graph" width="800" height="400"></canvas>
         <button class="button" id="collect-button" onclick="collectPrize()">Забрать</button>
+        <button class="button" id="new-game-button" onclick="startGame()">Новая игра</button>
         <p id="game-result" class="info"></p>
     </div>
 
@@ -50,9 +51,10 @@
         const canvas = document.getElementById('graph');
         const ctx = canvas.getContext('2d');
         const collectButton = document.getElementById('collect-button');
+        const newGameButton = document.getElementById('new-game-button');
         let animationId;
         let gameActive = false;
-        let stopPoint = Math.random() * 800;
+        let stopPoint;
 
         function drawParabola(currentX, scale) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -70,6 +72,7 @@
             if (gameActive) return;
 
             gameActive = true;
+            stopPoint = Math.random() * 800;
             let currentX = 0;
             const scale = 5;
             document.getElementById('game-result').innerText = '';
@@ -99,7 +102,7 @@
             document.getElementById('game-result').innerText = resultText;
         }
 
-        // Automatically start the game
+        // Инициализация новой игры при загрузке страницы
         startGame();
     </script>
 </body>
