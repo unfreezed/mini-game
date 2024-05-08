@@ -42,19 +42,23 @@
     <div class="game-container">
         <h1>Parabola Game</h1>
         <canvas id="graph" width="800" height="400"></canvas>
-        <button class="button" onclick="startGame()">Start Game</button>
+        <button class="button" id="collect-button" onclick="collectPrize()">Забрать</button>
         <p id="game-result" class="info"></p>
     </div>
 
     <script>
         const canvas = document.getElementById('graph');
         const ctx = canvas.getContext('2d');
+        const collectButton = document.getElementById('collect-button');
+        let animationId;
+        let gameActive = false;
+        let stopPoint = Math.random() * 800;
 
-        function drawParabola(scale) {
+        function drawParabola(currentX, scale) {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.beginPath();
             ctx.moveTo(0, canvas.height);
-            for (let x = 0; x <= canvas.width; x++) {
+            for (let x = 0; x <= currentX; x++) {
                 const y = canvas.height - Math.pow(x / 100, 2) * scale;
                 ctx.lineTo(x, y);
             }
@@ -63,11 +67,40 @@
         }
 
         function startGame() {
-            const scale = Math.random() * 100;
-            drawParabola(scale);
-            const resultText = scale > 50 ? 'You win!' : 'You lose!';
-            document.getElementById('game-result').innerText = resultText + ` Scale: ${scale.toFixed(2)}`;
+            if (gameActive) return;
+
+            gameActive = true;
+            let currentX = 0;
+            const scale = 5;
+            document.getElementById('game-result').innerText = '';
+
+            function animate() {
+                if (currentX >= stopPoint) {
+                    endGame('lose');
+                    return;
+                }
+                drawParabola(currentX, scale);
+                currentX += 2;
+                animationId = requestAnimationFrame(animate);
+            }
+            animate();
         }
+
+        function collectPrize() {
+            if (!gameActive) return;
+
+            cancelAnimationFrame(animationId);
+            endGame('win');
+        }
+
+        function endGame(result) {
+            gameActive = false;
+            const resultText = result === 'win' ? 'Вы выиграли!' : 'Вы проиграли!';
+            document.getElementById('game-result').innerText = resultText;
+        }
+
+        // Automatically start the game
+        startGame();
     </script>
 </body>
 </html>
